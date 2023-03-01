@@ -25,6 +25,9 @@ gradlePlugin {
             displayName = "Next.JS site export"
             description = "Export a Next.JS site to a distributable archive"
             implementationClass = "org.araqnid.gradle.nextjssite.NextJsSitePlugin"
+            tags.add("nodejs")
+            tags.add("jest")
+            tags.add("nextjs")
         }
     }
 }
