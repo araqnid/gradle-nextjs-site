@@ -17,6 +17,7 @@ dependencies {
 
 gradlePlugin {
     vcsUrl.set("https://github.com/araqnid/gradle-nextjs-site")
+    website.set("https://github.com/araqnid/gradle-nextjs-site")
 
     plugins {
         create("nextjsSitePlugin") {
