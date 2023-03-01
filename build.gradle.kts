@@ -3,7 +3,7 @@ plugins {
     id("com.gradle.plugin-publish") version "1.1.0"
 }
 
-group = "org.araqnid.gradle"
+group = "org.araqnid.nextjs-site"
 version = "0.0.1"
 
 repositories {
