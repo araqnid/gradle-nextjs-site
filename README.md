@@ -31,7 +31,7 @@ The following tasks are added:
 - `nextBuild` runs `next build`
 - `jestTest` runs `jest --ci` and configures the `jest-junit` reporter
   so that Gradle will collect the test output
-- `nextExport` runes `next export`
+- `nextExport` runs `next export`
 
 `nextExport` is added as a dependency to `assemble`, and `jestTest`
 is added as a dependency to `check`.
