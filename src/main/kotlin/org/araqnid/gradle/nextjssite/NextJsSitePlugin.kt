@@ -22,51 +22,55 @@ class NextJsSitePlugin : Plugin<Project> {
             task.delete(".next")
         }
 
-        target.tasks.register("nextBuild", YarnTask::class.java) { task ->
-            val extension = task.project.extensions.getByType(NextJsSiteExtension::class.java)
-            task.description = "Build Next.JS server"
-            task.inputs.dir("src")
-            task.inputs.file("next.config.js")
-            task.inputs.file("package.json")
-            task.inputs.file("yarn.lock")
-            task.inputs.property("debugBuild", extension.debugBuild)
-            task.inputs.property("productionProfiling", extension.productionProfiling)
-            task.inputs.property("lint", extension.lint)
-            task.outputs.dir(".next")
-            task.dependsOn("yarn")
-            task.args.set(listOf("next", "build"))
-            task.args.addAll(extension.debugBuild.map { if (it) listOf("--debug") else emptyList() })
-            task.args.addAll(extension.productionProfiling.map { if (it) listOf("--profile") else emptyList() })
-            task.args.addAll(extension.lint.map { if (it) emptyList() else listOf("--no-lint") })
+        target.tasks.register<YarnTask>("nextBuild") {
+            description = "Build Next.JS server"
+            inputs.dir("src")
+            inputs.file("next.config.js")
+            inputs.file("package.json")
+            inputs.file("yarn.lock")
+            inputs.property("debugBuild", project.nextJsSiteExtension.debugBuild)
+            inputs.property("productionProfiling", project.nextJsSiteExtension.productionProfiling)
+            inputs.property("lint", project.nextJsSiteExtension.lint)
+            outputs.dir(".next")
+            dependsOn("yarn")
+            args.set(listOf("next", "build"))
+            args.addFrom(project.nextJsSiteExtension.debugBuild) { if (it) yield("--debug") }
+            args.addFrom(project.nextJsSiteExtension.productionProfiling) { if (it) yield("--profile") }
+            args.addFrom(project.nextJsSiteExtension.lint) { if (!it) yield("--no-lint") }
         }
 
-        target.tasks.register("nextExport", YarnTask::class.java) { task ->
-            val siteDir = task.project.layout.buildDirectory.dir("site")
-            task.description = "Export Next.js pages to static files"
-            task.inputs.dir(".next")
-            task.inputs.file("next.config.js")
-            task.inputs.files("public")
-            task.outputs.dir(siteDir)
-            task.dependsOn("yarn", "nextBuild")
-            task.args.set(siteDir.map { listOf("next", "export", "-o", it.toString()) })
+        target.tasks.register<YarnTask>("nextExport") {
+            val siteDir = project.layout.buildDirectory.dir("site")
+            description = "Export Next.js pages to static files"
+            inputs.dir(".next")
+            inputs.file("next.config.js")
+            inputs.files("public")
+            outputs.dir(siteDir)
+            dependsOn("yarn", "nextBuild")
+            args.addFrom(siteDir) {
+                yield("next")
+                yield("export")
+                yield("-o")
+                yield(it.toString())
+            }
         }
 
-        target.tasks.register("jestTest", YarnTask::class.java) { task ->
-            val taskOutputDir = task.project.layout.buildDirectory.dir("test-results").map { it.dir(task.name) }
-            task.group = "verification"
-            task.description = "Run Javascript tests using Jest on nodejs"
-            task.inputs.dir("src")
-            task.inputs.files("test")
-            task.inputs.file("package.json")
-            task.inputs.file("yarn.lock")
-            task.inputs.files(task.project.fileTree(task.project.projectDir) {
+        target.tasks.register<YarnTask>("jestTest") {
+            val taskOutputDir = project.layout.buildDirectory.dir("test-results").map { it.dir(name) }
+            group = "verification"
+            description = "Run Javascript tests using Jest on nodejs"
+            inputs.dir("src")
+            inputs.files("test")
+            inputs.file("package.json")
+            inputs.file("yarn.lock")
+            inputs.files(project.fileTree(project.projectDir) {
                 it.include("jest.*.js") // typically jest.config.js, jest.setup.js
             })
-            task.outputs.dir(taskOutputDir)
-            task.dependsOn("yarn")
-            task.args.set(listOf("jest", "--ci", "--reporters=default", "--reporters=jest-junit", "--passWithNoTests"))
-            task.environment.put("JEST_JUNIT_OUTPUT_DIR", taskOutputDir.map { it.toString() })
-            task.environment.put("JEST_JUNIT_OUTPUT_NAME", "UI-jest-node.xml")
+            outputs.dir(taskOutputDir)
+            dependsOn("yarn")
+            args.set(listOf("jest", "--ci", "--reporters=default", "--reporters=jest-junit", "--passWithNoTests"))
+            environment.put("JEST_JUNIT_OUTPUT_DIR", taskOutputDir.map { it.toString() })
+            environment.put("JEST_JUNIT_OUTPUT_NAME", "UI-jest-node.xml")
         }
 
         target.tasks.named("assemble").configure { task ->
@@ -80,3 +84,6 @@ class NextJsSitePlugin : Plugin<Project> {
         target.dependencies.add("web", target.files(target.tasks.named("nextExport")))
     }
 }
+
+private val Project.nextJsSiteExtension: NextJsSiteExtension
+    get() = extensions.getByType(NextJsSiteExtension::class.java)
