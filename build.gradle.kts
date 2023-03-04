@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.8.10"
+    kotlin("plugin.serialization") version "1.8.10"
     id("com.gradle.plugin-publish") version "1.1.0"
 }
 
@@ -13,6 +14,13 @@ repositories {
 
 dependencies {
     implementation("com.github.node-gradle:gradle-node-plugin:3.5.1")
+
+    testImplementation(kotlin("test-junit"))
+    testImplementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8")
+    testImplementation(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.5.0"))
+    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
 }
 
 gradlePlugin {

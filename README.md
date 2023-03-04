@@ -24,7 +24,10 @@ nextJsSite {
 This plugin will use `yarn` to install dependencies and run `next export`. You should
 supply a `package.json`, `next.config.js` etc.
 
-This plugin expects that your source is in a `src` directory.
+This plugin expects that your source is in a `src` directory (i.e. pages in `src/pages`).
+
+Your package.json should include dev dependencies on `jest` and `jest-junit` so that the tests will be run
+and written to `test-results` where they can be picked up by Jenkins etc. just like Java tests.
 
 The following tasks are added:
 

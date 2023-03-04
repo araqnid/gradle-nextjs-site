@@ -45,7 +45,7 @@ class NextJsSitePlugin : Plugin<Project> {
             task.description = "Export Next.js pages to static files"
             task.inputs.dir(".next")
             task.inputs.file("next.config.js")
-            task.inputs.dir("public")
+            task.inputs.files("public")
             task.outputs.dir(siteDir)
             task.dependsOn("yarn", "nextBuild")
             task.args.set(siteDir.map { listOf("next", "export", "-o", it.toString()) })
@@ -56,7 +56,7 @@ class NextJsSitePlugin : Plugin<Project> {
             task.group = "verification"
             task.description = "Run Javascript tests using Jest on nodejs"
             task.inputs.dir("src")
-            task.inputs.dir("test")
+            task.inputs.files("test")
             task.inputs.file("package.json")
             task.inputs.file("yarn.lock")
             task.inputs.files(task.project.fileTree(task.project.projectDir) {
@@ -64,7 +64,7 @@ class NextJsSitePlugin : Plugin<Project> {
             })
             task.outputs.dir(taskOutputDir)
             task.dependsOn("yarn")
-            task.args.set(listOf("jest", "--ci", "--reporters=default", "--reporters=jest-junit"))
+            task.args.set(listOf("jest", "--ci", "--reporters=default", "--reporters=jest-junit", "--passWithNoTests"))
             task.environment.put("JEST_JUNIT_OUTPUT_DIR", taskOutputDir.map { it.toString() })
             task.environment.put("JEST_JUNIT_OUTPUT_NAME", "UI-jest-node.xml")
         }
