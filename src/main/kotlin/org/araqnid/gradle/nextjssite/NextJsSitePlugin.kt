@@ -23,6 +23,7 @@ class NextJsSitePlugin : Plugin<Project> {
         }
 
         target.tasks.register<YarnTask>("nextBuild") {
+            group = "build"
             description = "Build Next.JS server"
             inputs.dir("src")
             inputs.file("next.config.js")
@@ -40,8 +41,9 @@ class NextJsSitePlugin : Plugin<Project> {
         }
 
         target.tasks.register<YarnTask>("nextExport") {
-            val siteDir = project.layout.buildDirectory.dir("site")
+            group = "build"
             description = "Export Next.js pages to static files"
+            val siteDir = project.layout.buildDirectory.dir("site")
             inputs.dir(".next")
             inputs.file("next.config.js")
             inputs.files("public")
@@ -56,9 +58,9 @@ class NextJsSitePlugin : Plugin<Project> {
         }
 
         target.tasks.register<YarnTask>("jestTest") {
-            val taskOutputDir = project.layout.buildDirectory.dir("test-results").map { it.dir(name) }
             group = "verification"
             description = "Run Javascript tests using Jest on nodejs"
+            val taskOutputDir = project.layout.buildDirectory.dir("test-results").map { it.dir(name) }
             inputs.dir("src")
             inputs.files("test")
             inputs.file("package.json")
