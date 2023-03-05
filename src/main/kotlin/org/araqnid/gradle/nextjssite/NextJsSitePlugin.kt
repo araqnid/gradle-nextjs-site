@@ -34,9 +34,9 @@ class NextJsSitePlugin : Plugin<Project> {
             outputs.dir(".next")
             dependsOn("yarn")
             args.set(listOf("next", "build"))
-            args.addFrom(project.nextJsSiteExtension.debugBuild) { if (it) yield("--debug") }
-            args.addFrom(project.nextJsSiteExtension.productionProfiling) { if (it) yield("--profile") }
-            args.addFrom(project.nextJsSiteExtension.lint) { if (!it) yield("--no-lint") }
+            args.addFrom(project.nextJsSiteExtension.debugBuild) { if (it) add("--debug") }
+            args.addFrom(project.nextJsSiteExtension.productionProfiling) { if (it) add("--profile") }
+            args.addFrom(project.nextJsSiteExtension.lint) { if (!it) add("--no-lint") }
         }
 
         target.tasks.register<YarnTask>("nextExport") {
@@ -48,10 +48,10 @@ class NextJsSitePlugin : Plugin<Project> {
             outputs.dir(siteDir)
             dependsOn("yarn", "nextBuild")
             args.addFrom(siteDir) {
-                yield("next")
-                yield("export")
-                yield("-o")
-                yield(it.toString())
+                add("next")
+                add("export")
+                add("-o")
+                add(it.toString())
             }
         }
 
