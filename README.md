@@ -1,6 +1,8 @@
 # Next.JS site export from Gradle
 
 [![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/org.araqnid.nextjs-site?logo=gradle)](https://plugins.gradle.org/plugin/org.araqnid.nextjs-site)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.8.10-blue.svg)](http://kotlinlang.org)
+[![Gradle Build](https://github.com/araqnid/gradle-nextjs-site/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/araqnid/gradle-nextjs-site/actions/workflows/gradle-build.yml)
 
 This plugin allows you to create a React site based on Next.JS embedded within a Gradle project. During build,
 `next export` will be used to produce a ZIP file of the site which could then be published or embedded into a JAR
