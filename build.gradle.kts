@@ -19,7 +19,7 @@ dependencies {
     testImplementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8")
-    testImplementation(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.5.0"))
+    testImplementation(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.5.1"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
 }
 
