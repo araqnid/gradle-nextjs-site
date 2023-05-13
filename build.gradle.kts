@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.node-gradle:gradle-node-plugin:3.6.0")
+    implementation("com.github.node-gradle:gradle-node-plugin:5.0.0")
 
     testImplementation(kotlin("test-junit"))
     testImplementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
