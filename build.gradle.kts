@@ -16,7 +16,7 @@ dependencies {
     implementation("com.github.node-gradle:gradle-node-plugin:3.6.0")
 
     testImplementation(kotlin("test-junit"))
-    testImplementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.2"))
+    testImplementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.8.0"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8")
     testImplementation(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.5.0"))
